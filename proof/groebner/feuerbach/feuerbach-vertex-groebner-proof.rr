@@ -1,0 +1,17 @@
+// feuerbach-vertex-groebner-proof.rr
+// Proof of the existence of the Kariya point on the Feuerbach hyperbola with the Groenber basis
+// using vertex formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-theorem-vertex.rr")$
+Var = [x6,x7,x8,x9,x10,x11,x12,x1,x2,x3,x4,x5,x13]$
+G_kariya_theorem_vertex_ideal = bload("../kariya-theorem/G_kariya_theorem_vertex_ideal.dat")$
+
+F = (c*x11+s*x12-px)^2-(-s*x11+c*x12-py)^2-a^2$
+T = cons(c^2+s^2-1, G_kariya_theorem_vertex_ideal)$
+
+p_nf(F, T, Var, DRL);
+
+end$

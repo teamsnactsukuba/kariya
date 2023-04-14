@@ -1,0 +1,38 @@
+// feuerbach-vertex-wu-proof.rr
+// Proof of the existence of the Kariya point on the Feuerbach hyperbola with the Wu's method
+// using vertex formulation
+// Team SNAC Tsukuba 2023
+
+// Var = [x8,x7,x12,x11,x10,x9,x6,r,x5,x4,x3,x2,x1]$
+//Var = [x8,x7,x12,x11,x10,x9,x6,x13,x5,x4,x3,x2,x1]$
+// Var = [x0,y0,s,t,x13,x12,x11,x8,x7,x6,x5,x4,x3,x2,x1]$
+// Var3 = [x6,x7,x8,x9,x10,x11,x12,x1,x2,x3,x4,x5,x13]$
+Var4 = [x10,x8,x7,x6,x11,x12,x1,x2,x3,x4,x13,x5]$
+ord(Var4)$
+
+load("../../def/kariya-theorem-vertex.rr")$
+load("../../src/wumethod.rr")$
+// load("../../src/sqfrfactor.rr")$
+
+// From kariya-theorem-vertex.rr
+//
+// H1 = x1^2-x4^2-x5^2$ // BD' = BF'
+// H2 = (1-x1)^2-(1-x2)^2-x3^2$ // CD' = CE'
+// H3 = (u1-x4)^2+(u2-x5)^2-(u1-x2)^2-(u2-x3)^2$ // AE' = AF'
+// H4 = u1*x5-u2*x4$ // A, B, F' are collinear 
+// H5 = u2*(1-x2)-x3*(1-u1)$ // A, C, E' are collinear
+// H6 = (x2-x1)^2+(x3-x13)^2-x13^2$ // OD' = OE'
+// H7 = (x6-x13)+k*x13$ // OD = k * OD'
+// H8 = (x7-x1)-k*(x2-x1)$ // OE = k * OE' (w.r.t. the x-coordinate)
+// H9 = (x8-x13)-k*(x3-x13)$  // OE = k * OE' (w.r.t. the y-coordinate)
+// H12 = (u2-x6)*(u1-x11)-(u1-x1)*(u2-x12)$ // A, D, G are collinear
+// H13 =  (1-x11)*x10-(1-x9)*x12$ // C, F, G are collinear
+
+// H14 = c^2+s^2-1$ /* c = cos(theta), s = sin(theta) */
+F = (c*x11+s*x12-px)^2-(-s*x11+c*x12-py)^2-a^2$
+
+Gen2 = [H1, H2, H3, H4, H5, H6, H7, H8, H9, H12, H13]$
+
+wu_method(F, Gen2, Var4);
+
+end$

@@ -1,0 +1,30 @@
+// The incenter formulation of Kariya's corollary
+// adopted from kariya_cor_naishin.rr
+// Ayane Ito, Takefumi Kasai, Akira Terui 2022
+
+// The hyphothesis
+
+H1 = u2^2*((1-x4)^2+x3^2)-(1-u1)^2*((u1-x4)^2+(u2-x3)^2)$ // tan BCO = tan OCA
+H2 = u2^2*(x6^2+x5^2)-u1^2*((u1-x6)^2+(u2-x5)^2)$ // tan CBO = tan OBA
+H3 = x3*(x2-1)-x1*(x4-1)$ // A, E, C are collinear
+H4 = x3*(x3-u2)+(x4-1)*(x4-u1)$ // EO and EC intersect perpendicularly
+H5 = x6*x1-x2*x5$ // F, A, B are collinear
+H6 = x5*(x5-u2)+x6*(x6-u1)$ // FO and FB intersect perpendicularly
+// H7 = (x8-u1)*x1-x7*(x2-u1)$ // G, A, D are collinear -> kasai
+H7 = x8*x3-x4*x7$ // B, G, E are collinear -> paper
+// H8 = (x8-1)*x5-x7*(x6-1)$ // C, G, F are collinear -> kasai
+H8 = x1*(x8-u1)-(x2-u1)*x7$ // A, G, D are collinear -> paper
+
+// The conclusion
+
+// G = x8*x3-x4*x7$ // G, B, E are collinear -> kasai 
+G = x5*(x8-1)-x7*(x6-1)$ // C, G, F are collinear -> paper
+
+// The list of generators
+
+Gen = [H1, H2, H3, H4, H5, H6, H7, H8]$
+
+// VL=[x8,x7,x6,x5,x4,x3,x2,x1]$
+// VL2=[x8,x7,x2,x1,x5,x6,x4,x3]$
+
+end$

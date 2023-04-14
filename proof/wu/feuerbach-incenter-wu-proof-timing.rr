@@ -1,0 +1,27 @@
+// feuerbach-incenter-wu-proof.rr
+// Proof of the existence of the Kariya point on the Feuerbach hyperbola with the Wu's method
+// using vertex formulation
+// Team SNAC Tsukuba 2023
+
+Var = [px,py,c,s,x13,x12,x9,x8,x7,x6,x5,x4,x3,x2,x1]$
+ord(Var)$
+
+load("../../def/kariya-theorem-incenter.rr")$
+load("../../src/wumethod.rr")$
+
+H14 = c^2+s^2-1$ // the conditions on c and s
+H15 = c-2*px*c-2*py*s$ // B(0,0) and C(1,0) are points on the Feuerbach's hyperbola
+H16 = x2^2*c-2*x2*px*c+2*x2*x1*s-2*x2*py*s-2*px*x1*s-x1^2*c+2*x1*py*c$ // B(0,0) and A(x2,x1) are points on the Feuerbach's hyperbola
+H17 = u1^2*c-2*u1*px*c+2*u1*u2*s-2*u1*py*s-2*px*u2*s-u2^2*c+2*u2*py*c$ // B(0,0) and O(u1,u2) are points on the Feuerbach's hyperbola
+
+Gen2 = [H1, H2, H3, H4, H5, H6, H7, H8, H9, H12, G, H14, H15, H16, H17]$
+
+G2 = x13^2*c-2*x13*px*c+2*x13*x12*s-2*x13*py*s-2*px*x12*s-x12^2*c+2*x12*py*c$ // B(0,0) and G(x13,x12) are points on the Feuerbach's hyperbola
+
+cputime(1)$
+for (I = 0; I < 10; I++) { 
+    wu_method(G2, Gen2, Var);
+}
+cputime(0)$
+
+end$

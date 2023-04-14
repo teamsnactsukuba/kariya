@@ -1,0 +1,13 @@
+// kariya-theorem-incenter-groebner.rr
+// Computing a Groebner basis for the Kariya's theorem (Corollary)
+// using incenter formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-theorem-incenter.rr")$
+Var = [x13,x12,x11,x10,x9,x8,x7,x6,x5,x4,x3,x2,x1]$
+G_kariya_theorem_incenter_ideal = gr(Gen, Var, DRL)$
+bsave(G_kariya_theorem_incenter_ideal, "G_kariya_theorem_incenter_ideal.dat")$
+
+end$

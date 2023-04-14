@@ -1,0 +1,25 @@
+// The vertex formulation of Kariya's corollary
+// adopted from kariya_cor_choten.rr
+// Ayane Ito, Takefumi Kasai, Akira Terui 2022
+
+// The hyphothesis
+
+H1 = x1^2-x4^2-x5^2$ // BD = EF
+H2 = (u2-x4)^2+(u3-x5)^2-(u2-x2)^2-(u3-x3)^2$ // AF = AE
+H3 = (x2-u1)^2+x3^2-(u1-x1)^2$ // CE = CD
+H4 = u2*x5-u3*x4$ // A, F, B are collinear
+H5 = (u2-u1)*x3-(x2-u1)*u3$ // A, E, C are collinear
+H6 = (u2-x1)*x7-(x6-x1)*u3$ // A, G, D are collinear
+H7 = x2*x7-x6*x3$ // B, G, E are collinear
+
+// The conclusion
+
+G = (x4-u1)*x7-(x6-u1)*x5$ // C, G, F are collinear
+
+// The list of generators
+
+Gen = [H1, H2, H3, H4, H5, H6, H7]$
+
+// VL = [x7,x6,x5,x4,x3,x2,x1]$
+
+end$

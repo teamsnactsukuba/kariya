@@ -1,0 +1,290 @@
+// An elementary implementation of the Wu's method 
+// Team SNAC Tsukuba 2022
+
+// Reference:
+// 
+// D.A. Cox, J. Little, D. O’Shea
+// Ideals, Varieties, and Algorithms, Fourth Edition
+// Springer, 2015
+// Section 5
+//
+// S.-C. Chou
+// Mechanical Geometry Theorem Proving
+// D. Reidel, 1988
+// Part I, Section 1.5
+
+// Basic usage for the proof:
+// wu_method(G, L, VL)
+//  G: a polynomial; the conclusion
+//  L: a list of polymonials: the assumption
+//  VL: a list of variables
+// If the output is 0, the conclusion is successfully proved
+
+// Computing a pseudo remainder 
+def rem(F, G, Var) {
+    // F: a dividend
+    // G: a divisor
+    // Var: the variable with respect to which the pseudo division is executed
+    M = deg(G, Var); 
+    D = coef(G, deg(G, Var), Var);
+    R = F;
+    while (R !=0 && deg(R, Var) >= M) {
+        GC = gcdz(coef(G, deg(G, Var), Var), coef(R, deg(R, Var), Var));
+        R = red(D / GC) * R - red(coef(R, deg(R, Var), Var) / GC) * G * Var^(deg(R, Var) - M);
+        // Divide the coefficients by the GCD for avoiding coefficient explosion
+    };
+    return R;
+}
+
+// Computing a pseudo remainder without eliminating the gcds
+def rem2(F, G, Var) {
+    // F: a dividend
+    // G: a divisor
+    // Var: the variable with respect to which the pseudo division is executed
+    M = deg(G, Var); 
+    D = coef(G, deg(G, Var), Var);
+    R = F;
+    while (R !=0 && deg(R, Var) >= M) {
+        // GC = gcdz(coef(G, deg(G, Var), Var), coef(R, deg(R, Var), Var));
+        GC = 1;
+        R = red(D / GC) * R - red(coef(R, deg(R, Var), Var) / GC) * G * Var^(deg(R, Var) - M);
+        // Divide the coefficients by the GCD for avoiding coefficient explosion
+    };
+    return R;
+}
+
+// Wu's method
+def wu_method(G, L, VL) {
+    // G: a polynomial; the conclusion
+    // L: a list of polymonials: the assumption
+    // VL: a list of variables
+    if (VL == 0) {
+        error("The list of variables is not defined");
+    }
+    return prem_triangular(G, triangulate(L, VL), VL);
+}
+
+
+// Repeating the Wu's method computations
+def wu_repeat(Num, G, L, VL) {
+    // Num: the number for the repeat
+    for(I = 0; I < Num; I++) {
+        wu_method(G, L, VL);
+    }
+}
+
+
+// Pseudo division of a polynomial by a trinangulated set
+def prem_triangular(G, FL, VL) {
+    // G: the polynomial 
+    // FL: the triangulated set
+    // VL: the list of variables
+    FL = reverse(FL);
+    R = G;
+    while (length(FL) > 0) {
+        Divisor = car(FL);
+        while(deg(Dividend, car(VL)) == 0) {
+            VL = cdr(VL);
+        }
+        R = rem(R, Divisor, car(VL));
+        FL = cdr(FL);
+        VL = cdr(VL);
+    }
+    return R;
+}
+
+
+// Triangulate the list of polynomials w.r.t. the list of variables
+def triangulate(L, VL) {
+    // L: a list of polynomials
+    // VL: a list of variables
+    FL = [];
+    P = [];
+    while (length(L) > 0) {
+        Var = car(VL);
+        if (Var == []) {
+            return append(L, FL);
+        }
+        P = triangulate_single_var(L, FL, VL);
+        FL = P[0];
+        L = P[1];
+        VL = cdr(VL);
+        if(L == [0]) {
+            return ("0in");
+        }
+    }
+    return FL;
+}
+
+
+// Triangulate the polynomials in the list of 
+// not-triangulated polynomials w.r.t the single variable
+// and add them to the list of already triangulated polynomials
+def triangulate_single_var(L, FL, VL) {
+    // L: a list of not-triangulated polynomials
+    // FL: a list of already triangulated polynomials
+    // VL: a list of variables
+
+    S = []; // the list of polynomials in Var
+    LL = []; // the list of polynomials in the other variables
+    Var = car(VL);
+
+    while (L != []) {
+        if (deg(car(L), Var) >= 1) {
+            S = cons(car(L), S);
+        } else {
+            LL = cons(car(L), LL);
+        };
+        L = cdr(L);
+    }
+    if (length(S) == 0) {
+        // S is empty
+        return [FL, LL];
+    } else if (length(S) == 1) {
+        // the triangulation w.r.t. Var is complete
+        return [cons(car(S), FL), LL];
+    } else {
+        if (count_linear_poly(S, Var) > 0) {
+            // reduce the polynomials in S (linear case)
+            return reduce_system_linear(S, LL, FL, VL);
+        } else {
+            // reduce the polynomials in S (nonlinear case)
+            return reduce_system_nonlinear(S, LL, FL, VL);
+        }
+    }
+}
+
+
+// Reduce the polynomials in S w.r.t. a variable
+// in the case S has a polynomial with linear term in the variable
+def reduce_system_linear(S, L, FL, VL) {
+    // S: the list of not-triangulated polynomials with terms in car(VL)
+    // L: the list of not-triangulated polynomials without terms in car(VL)
+    // FL: the list of already traiangulated polynomials
+    // VL: the list of variables
+    SS = [];
+    A = 0;
+    Var = car(VL);
+    while (length(S) > 0) {
+        if (deg(car(S), Var) == 1) { 
+            // Let A be a polynomial whose degree = 1
+            // and SS be a list of polynomials whose degree > 1
+            if (A == 0) {
+                A = car(S);
+            } else if (num_terms(car(S), VL) <= num_terms(A, VL)) {
+                SS = cons(A, SS);
+                A = car(S);
+            } else {
+                SS = cons(car(S), SS);
+            } 
+        } else {
+            SS = cons(car(S), SS);
+        }
+        S = cdr(S); 
+    }
+    
+    // Compute the prem of the polynomials in SS by A
+    // and add to L for further reductions
+    while (length(SS) > 0) {
+        REM = rem(car(SS), A, Var);
+        // REM = sqfrfactor2(REM, VL);
+        if (type(REM) != 1) {
+            L = cons(REM, L);
+        }
+        SS = cdr(SS);
+    }
+
+    return [cons(A, FL), L];
+}
+
+
+// Reduce the polynomials in S w.r.t. a variable
+// in the case S has a polynomial without linear term in the variable
+def reduce_system_nonlinear(S, L, FL, VL) {
+    // S: the list of not-triangulated polynomials with terms in car(VL)
+    // L: the list of not-triangulated polynomials without terms in car(VL)
+    // FL: the list of already traiangulated polynomials
+    // VL: the list of variables
+    Var = car(VL);
+    while (length(S) > 1) {
+        B = S[0];
+        C = S[1];
+        if (deg(B, Var) < deg(C, Var)) {
+            // Switch B and C for making deg(car(S)) > deg(cadr(S))
+            S = cons(C, cons(B, cddr(S)));
+        }
+        REM = rem(car(S), cadr(S), Var);
+        // REM = sqfrfactor2(REM, VL);
+        if (deg(REM, Var) > 0) {
+            S = cons(REM, cdr(S));
+            if (deg(REM, Var) == 1) {
+                return reduce_system_linear(S, L, FL, VL);
+            } 
+        } else {
+            S = cdr(S);
+            if (deg(REM, Var) == 0) {
+                L = cons(REM, L);
+            }            
+            if (length(S) == 1) {
+                return [cons(car(S), FL), L];
+            } 
+        } 
+    };
+    return [cons(car(A), FL), L];
+}
+
+
+// Count the number of polynomials w.r.t. the variable whose degree == 1
+def count_linear_poly(S, Var) {
+    // S: a list of polynomials
+    // Var: a variable
+    E = [];
+    while (length(S) > 0) {
+        if (deg(car(S), Var) == 1) {
+            E = cons(car(S), E);
+        } 
+        S = cdr(S); 
+    }
+    return length(E);
+}
+
+
+// Count the number of terms w.r.t. the list of variables
+def num_terms(F, VL) {
+    // F: a polynomial
+    // VL: a list of variables
+    Kou = 0;
+    if (length(VL) == 0) {
+        Kou++;
+        return(Kou);
+    }
+    D = deg(F, car(VL));
+    for (I = D; I >= 0; I--) {
+        C = coef(F, I, car(VL));
+        if (C != 0) {
+            Kou += num_terms(C, cdr(VL));
+        }
+    }
+    return(Kou);
+}
+
+
+// num_terms for the polynomials in a list 
+def num_terms_list(L, VL) {
+    // L: a list of polynomials
+    // VL: a list of variables
+    while (length(L) > 0) {
+        A += num_terms(car(L), VL);
+        L = cdr(L);
+    };
+    return(A);
+}
+
+
+// Check if the list has 0
+def has_zero(L) {
+    // L: list
+    return base_memberq(0, L);
+}
+
+end$

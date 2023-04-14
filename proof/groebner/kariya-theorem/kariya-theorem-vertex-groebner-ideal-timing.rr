@@ -1,0 +1,15 @@
+// kariya-theorem-vertex-groebner-ideal-timing.rr
+// Computing a Groebner basis for the Kariya's theorem (Theorem)
+// using vertex formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-theorem-vertex.rr")$
+// gr(Y,[z,x6,x7,x8,x9,x10,x,x11,x12,x1,x2,x3,x4,x5,r],0);
+Var = [x6,x7,x8,x9,x10,x11,x12,x1,x2,x3,x4,x5,x13]$
+cputime(1)$
+for (I = 0; I < 10; I++) { G_kariya_theorem_vertex_ideal = gr(Gen, Var, DRL)$ }
+cputime(0)$
+
+end$

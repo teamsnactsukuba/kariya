@@ -1,0 +1,13 @@
+// kariya-corollary-vertex-groebner.rr
+// Computing a Groebner basis for the Kariya's theorem (Corollary)
+// using vertex formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-corollary-vertex.rr")$
+Var = [x7,x6,x5,x4,x3,x2,x1]$
+G_kariya_corollary_vertex_ideal = gr(Gen, Var, DRL)$
+bsave(G_kariya_corollary_vertex_ideal, "G_kariya_corollary_vertex_ideal.dat")$
+
+end$

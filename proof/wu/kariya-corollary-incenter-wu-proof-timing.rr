@@ -1,0 +1,18 @@
+// kariya-corollary-incenter-wu-proof.rr
+// Proof of the Kariya's theorem (Corollary) with the Wu's method
+// using incenter formulation
+
+Var = [x8,x7,x6,x5,x4,x3,x2,x1]$
+ord(Var)$
+
+load("../../def/kariya-theorem-incenter.rr")$
+load("../../src/wumethod.rr")$
+
+cputime(1)$
+for (I = 0; I < 1000; I++) { 
+    wu_method(G, Gen, Var);
+}
+cputime(0)$
+
+
+end$

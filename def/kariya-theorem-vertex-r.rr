@@ -1,0 +1,29 @@
+// The vertex formulation of Kariya's theorem
+// adopted from kariya_gene_choten.rr
+// Ayane Ito, Takefumi Kasai, Akira Terui 2022
+
+// The hyphothesis
+
+H1 = x1^2-x4^2-x5^2$ // BD' = BF'
+H2 = (1-x1)^2-(1-x2)^2-x3^2$ // CD' = CE'
+H3 = (u1-x4)^2+(u2-x5)^2-(u1-x2)^2-(u2-x3)^2$ // AE' = AF'
+H4 = u1*x5-u2*x4$ // A, B, F' are collinear 
+H5 = u2*(1-x2)-x3*(1-u1)$ // A, C, E' are collinear
+H6 = (x2-x1)^2+(x3-r)^2-r^2$ // OD' = OE'
+H7 = (x6-r)+k*r$ // OD = k * OD'
+H8 = (x7-x1)-k*(x2-x1)$ // OE = k * OE' (w.r.t. the x-coordinate)
+H9 = (x8-r)-k*(x3-r)$  // OE = k * OE' (w.r.t. the y-coordinate)
+H10 = (x9-x1)-k*(x4-x1)$ // OF = k * OF' (w.r.t. the x-coordinate)
+H11 = (x10-r)-k*(x5-r)$ // OF= k * OF' (w.r.t. the y-coordinate)
+H12 = (u2-x6)*(u1-x11)-(u1-x1)*(u2-x12)$ // A, D, G are collinear
+H13 =  (1-x11)*x10-(1-x9)*x12$ // C, F, G are collinear
+
+// The conclusion
+
+G = x7*x12-x8*x11$ // B, E, G are collinear
+
+// The list of generators
+
+Gen = [H1, H2, H3, H4, H5, H6, H7, H8, H9, H10, H11, H12, H13]$
+
+end$

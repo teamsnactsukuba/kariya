@@ -1,0 +1,13 @@
+// kariya-corollary-incenter-groebner-proof.rr
+// Proof of the Kariya's theorem (Corollary) with the Groenber basis
+// using incenter formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-corollary-incenter.rr")$
+G_kariya_corollary_incenter_ideal = bload("G_kariya_corollary_incenter_ideal.dat")$
+
+p_nf(G, G_kariya_corollary_incenter_ideal, Var, DRL);
+
+end$

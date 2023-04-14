@@ -1,0 +1,16 @@
+// kariya-theorem-incenter-groebner-proof.rr
+// Proof of the Kariya's theorem (Theorem) with the Groenber basis
+// using vertex formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-theorem-vertex.rr")$
+Var = [x6,x7,x8,x9,x10,x11,x12,x1,x2,x3,x4,x5,x13]$
+G_kariya_theorem_vertex_ideal = bload("G_kariya_theorem_vertex_ideal.dat")$
+
+cputime(1)$
+for (I = 0; I < 10; I++) { p_nf(G, G_kariya_theorem_vertex_ideal, Var, DRL); }
+cputime(0)$
+
+end$

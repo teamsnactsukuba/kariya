@@ -1,0 +1,14 @@
+// kariya-theorem-vertex-groebner.rr
+// Computing a Groebner basis for the Kariya's theorem (Theorem)
+// using vertex formulation
+// Team SNAC Tsukuba 2022
+
+DRL=0$
+
+load("../../../def/kariya-theorem-vertex-r.rr")$
+// gr(Y,[z,x6,x7,x8,x9,x10,x,x11,x12,x1,x2,x3,x4,x5,r],0);
+Var = [x6,x7,x8,x9,x10,x11,x12,x1,x2,x3,x4,x5,r]$
+G_kariya_theorem_vertex_ideal_r = gr(Gen, Var, DRL)$
+bsave(G_kariya_theorem_vertex_ideal_r, "G_kariya_theorem_vertex_ideal_r.dat")$
+
+end$

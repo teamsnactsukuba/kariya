@@ -1,0 +1,18 @@
+// kariya-corollary-incenter-groebner.rr
+// Computing a Groebner basis for Kariya's theorem (Corollary)
+// using incenter formulation
+// Team SNAC Tsukuba 2022
+
+#define DRL 0
+
+load("../../../def/kariya-corollary-incenter.rr")$
+Var = [x1,x2,x3,x4,x5,x6,x7,x8]$
+
+Y1 = append(Gen, [1-y*G])$ // for examining radical membership 
+Var1 = append(Var, [y])$
+gr(Y1, Var1, DRL);
+
+Y2 = append(Y1, [1-y2*u1])$ // 1-y2*u1 means u1 !=0
+gr(Y2, Var1, DRL);
+
+end$

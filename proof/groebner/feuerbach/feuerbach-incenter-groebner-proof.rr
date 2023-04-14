@@ -1,0 +1,17 @@
+// fauerbach-incenter-groebner-proof.rr
+// Proof of the existence of the Kariya point on the Feuerbach hyperbola with the Groenber basis
+// using incenter formulation
+// Team SNAC Tsukuba 2023
+
+#define DRL 0
+
+load("../../../def/kariya-theorem-incenter.rr")$
+Var = [x13,x12,x11,x10,x9,x8,x7,x6,x5,x4,x3,x2,x1]$
+G_kariya_theorem_incenter_ideal = bload("../kariya-theorem/G_kariya_theorem_incenter_ideal.dat")$
+
+F = (c*x13+s*x12-px)^2-(-s*x13+c*x12-py)^2-a^2$
+T = cons(c^2+s^2-1, G_kariya_theorem_incenter_ideal)$
+
+p_nf(F, T, Var, DRL);
+
+end$
